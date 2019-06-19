@@ -1,13 +1,14 @@
 import pandas as pd
 from datetime import datetime
-from nltk.tokenize import sent_tokenize, word_tokenize ,PunktSentenceTokenizer
+from nltk.tokenize import  word_tokenize 
 from nltk.corpus import stopwords
-import nltk
+from nltk import FreqDist
 from wordcloud import WordCloud
-from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
-from nltk.stem import WordNetLemmatizer 
+from nltk.stem import WordNetLemmatizer
+
+
 startTime = datetime.now()
 
 df=pd.read_excel("billboard_lyrics_1964-2015.xlsx",header=0,  encoding='latin-1')
@@ -46,8 +47,8 @@ for group,frame in df_freq.groupby("Decade"):
     evaluate_freq.at[group,"Total Words"]=len(words)
 
 ## Let´s see difference between top 50 common words in 1960 and 2015, which are lost since 1960 and which are appear in 2015
-freq_1960=nltk.FreqDist(word_tokenize(evaluate_freq.loc[1960][0])).most_common(50)
-freq_2015=nltk.FreqDist(word_tokenize(evaluate_freq.loc[2010][0])).most_common(50)
+freq_1960=FreqDist(word_tokenize(evaluate_freq.loc[1960][0])).most_common(50)
+freq_2015=FreqDist(word_tokenize(evaluate_freq.loc[2010][0])).most_common(50)
 freq_1960=list(zip(*freq_1960))[0]
 freq_2015=list(zip(*freq_2015))[0]
 
@@ -94,7 +95,7 @@ wordcloud = WordCloud(background_color="white", repeat=True, mask=mask)
 
 for axis,num in zip(evaluate_freq.index,range(1,len(evaluate_freq.index)+1)):
     ax = fig.add_subplot(2,3,num)
-    wordcloud.generate_from_frequencies(nltk.FreqDist(word_tokenize(evaluate_freq.loc[axis][0])))
+    wordcloud.generate_from_frequencies(FreqDist(word_tokenize(evaluate_freq.loc[axis][0])))
     plt.axis("off")
     plt.imshow(wordcloud, interpolation="bilinear")
     ax.set_title("The '"+str(axis)[-2:],fontsize=10, loc='right',)

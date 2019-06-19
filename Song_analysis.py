@@ -1,11 +1,9 @@
-from nltk.tokenize import sent_tokenize, word_tokenize ,PunktSentenceTokenizer
+from nltk.tokenize import  word_tokenize
 from nltk.corpus import stopwords
-import nltk
+from nltk import FreqDist
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 from scipy import stats
-from nltk.stem import PorterStemmer
 from Explore_dataframe import explorar_dataframe
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -41,13 +39,13 @@ top_10=df[df["Rank"]<=10]
 ## Let´s defined some parameters to analyze the richness of the lyricis, such as number of words and number of unique words
 
 top_10["Words"]=top_10["Lyrics"].apply(lambda x: len(word_tokenize(x)))
-top_10["Unique Words"]=df["Lyrics"].apply(lambda x: len(nltk.FreqDist(word_tokenize(x))))
+top_10["Unique Words"]=df["Lyrics"].apply(lambda x: len(FreqDist(word_tokenize(x))))
 
 ## Richness is defined as % of unique words in a song lyric.  Ej: if a all words in a lyric are different: Richness= 100% 
 top_10["Richness"]=round(top_10["Unique Words"]/top_10["Words"]*100,2)
 
 ## It is interesting to find how many repetitions has the most common word of the lyric
-top_10["Word Repetition"]=top_10["Lyrics"].apply(lambda x: nltk.FreqDist(word_tokenize(x)).most_common(1)[0][1])
+top_10["Word Repetition"]=top_10["Lyrics"].apply(lambda x: FreqDist(word_tokenize(x)).most_common(1)[0][1])
 top_10["%Rep"]=top_10["Word Repetition"]/top_10["Words"]*100
 
 ## Also is interesting to determine mean word lenght for each song, as the leaght of the longest word.
@@ -60,7 +58,7 @@ top_10["Stop Words"]=df["Lyrics"].apply(lambda x: len([w for w in word_tokenize(
 top_10["%Stop Words"]=top_10["Stop Words"]/top_10["Words"]*100
 
 
-print(top_10["Rep%"].unique())
+
 
 
 ## ----- Graph of features-------
@@ -71,7 +69,6 @@ evaluate_columns=["Words","Unique Words","Richness","Word Length","Word Repetiti
 evol_anual=pd.DataFrame()
 for group,frame in top_10.groupby("Year"):
     for column in evaluate_columns:
-        print(column)
         evol_anual.at[group,"Mean"+str(column)]=frame[column].mean()
 
 

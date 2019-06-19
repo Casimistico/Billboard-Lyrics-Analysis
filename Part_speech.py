@@ -1,8 +1,6 @@
 from datetime import datetime
 import pandas as pd
-from nltk.tokenize import sent_tokenize, word_tokenize ,PunktSentenceTokenizer
-from nltk.corpus import stopwords
-import nltk
+from nltk.tokenize import  word_tokenize ,PunktSentenceTokenizer
 import matplotlib.pyplot as plt
 from scipy import stats
 

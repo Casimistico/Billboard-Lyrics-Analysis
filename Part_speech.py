@@ -3,6 +3,7 @@ import pandas as pd
 from nltk.tokenize import  word_tokenize ,PunktSentenceTokenizer
 import matplotlib.pyplot as plt
 from scipy import stats
+import nltk
 
 startTime = datetime.now()
 
